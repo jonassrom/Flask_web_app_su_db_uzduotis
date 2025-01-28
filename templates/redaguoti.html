@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Redaguoti Automobilį</h1>
+<form method="POST">
+    Gamintojas: <input type="text" name="gamintojas" value="{{ automobilis.gamintojas }}" required><br>
+    Modelis: <input type="text" name="modelis" value="{{ automobilis.modelis }}" required><br>
+    Spalva: <input type="text" name="spalva" value="{{ automobilis.spalva }}" required><br>
+    Metai: <input type="number" name="metai" value="{{ automobilis.metai }}" required><br>
+    Kaina: <input type="number" name="kaina" step="0.01" value="{{ automobilis.kaina }}" required><br>
+    <button type="submit">Saugoti</button>
+</form>
+{% endblock %}

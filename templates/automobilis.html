@@ -1,0 +1,8 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>{{ automobilis.gamintojas }} {{ automobilis.modelis }}</h1>
+<p><strong>Spalva:</strong> {{ automobilis.spalva }}</p>
+<p><strong>Metai:</strong> {{ automobilis.metai }}</p>
+<p><strong>Kaina:</strong> {{ automobilis.kaina }} EUR</p>
+<a href="/">Atgal</a>
+{% endblock %}

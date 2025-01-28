@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<h1>Pridėti Naują Automobilį</h1>
+<form method="POST">
+    Gamintojas: <input type="text" name="gamintojas" required><br>
+    Modelis: <input type="text" name="modelis" required><br>
+    Spalva: <input type="text" name="spalva" required><br>
+    Metai: <input type="number" name="metai" required><br>
+    Kaina: <input type="number" name="kaina" step="0.01" required><br>
+    <button type="submit">Pridėti</button>
+</form>
+{% endblock %}
