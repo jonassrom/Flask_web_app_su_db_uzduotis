@@ -1,3 +1,4 @@
+from sqlalchemy import func
 from models import db, Automobilis
 from flask import Flask, render_template, request, redirect, url_for
 
@@ -16,7 +17,6 @@ def visi_automobiliai():
     query = request.args.get('search', '')
 
     if query:
-        # Filter results based on the query
         automobiliai = Automobilis.query.filter(
             (Automobilis.gamintojas.like(f"%{query}%")) |
             (Automobilis.modelis.like(f"%{query}%")) |
@@ -24,11 +24,29 @@ def visi_automobiliai():
             (Automobilis.metai.like(f"%{query}%")) |
             (Automobilis.kaina.like(f"%{query}%"))
         ).all()
-    else:
-        # If no search query, display all cars
-        automobiliai = Automobilis.query.all()
 
-    return render_template('automobiliai.html', automobiliai=automobiliai, query=query)
+        avg_price = db.session.query(func.avg(Automobilis.kaina)).filter(
+            (Automobilis.gamintojas.like(f"%{query}%")) |
+            (Automobilis.modelis.like(f"%{query}%")) |
+            (Automobilis.spalva.like(f"%{query}%")) |
+            (Automobilis.metai.like(f"%{query}%")) |
+            (Automobilis.kaina.like(f"%{query}%"))
+        ).scalar()
+
+    else:
+        automobiliai = Automobilis.query.all()
+        avg_price = db.session.query(func.avg(Automobilis.kaina)).scalar()
+
+    avg_price = round(avg_price, 2) if avg_price else 0
+
+    return render_template('automobiliai.html', automobiliai=automobiliai, query=query, avg_price=avg_price)
+
+
+@app.route('/vidutine_kaina')
+def vidutine_kaina():
+    avg_price = db.session.query(func.avg(Automobilis.kaina)).scalar()
+    avg_price = round(avg_price, 2) if avg_price else 0
+    return f"Vidutinė automobilių kaina yra: {avg_price} EUR"
 
 
 @app.route('/automobiliai/<int:automobilio_id>')
